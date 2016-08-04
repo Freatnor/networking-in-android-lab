@@ -3,6 +3,7 @@ package com.example.freatnor.networkinglab;
 import android.app.Activity;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -40,6 +41,8 @@ public class MainActivity extends AppCompatActivity implements WalmartGetComplet
 
     private ArrayList<WalmartObject> mObjects = new ArrayList();
 
+    private WalmartAsyncTask task;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +66,13 @@ public class MainActivity extends AppCompatActivity implements WalmartGetComplet
             @Override
             public void onClick(View view) {
                 if(checkConnection()) {
-                    WalmartAsyncTask task = new WalmartAsyncTask(MainActivity.this);
-                    task.execute(COLD_CEREAL_ID, HOT_CEREAL_ID);
+                    if(task != null && task.getStatus() == AsyncTask.Status.RUNNING){
+                        Toast.makeText(MainActivity.this, "Still pulling food item data...",
+                                Toast.LENGTH_LONG).show();
+                    }else {
+                        WalmartAsyncTask task = new WalmartAsyncTask(MainActivity.this);
+                        task.execute(COLD_CEREAL_ID, HOT_CEREAL_ID);
+                    }
                 }
             }
         });
@@ -73,8 +81,13 @@ public class MainActivity extends AppCompatActivity implements WalmartGetComplet
             @Override
             public void onClick(View view) {
                 if(checkConnection()) {
-                    WalmartAsyncTask task = new WalmartAsyncTask(MainActivity.this);
-                    task.execute(CHOCOLATE_ID);
+                    if(task != null && task.getStatus() == AsyncTask.Status.RUNNING){
+                        Toast.makeText(MainActivity.this, "Still pulling food item data...",
+                                Toast.LENGTH_LONG).show();
+                    }else {
+                        WalmartAsyncTask task = new WalmartAsyncTask(MainActivity.this);
+                        task.execute(CHOCOLATE_ID);
+                    }
                 }
             }
         });
@@ -83,8 +96,13 @@ public class MainActivity extends AppCompatActivity implements WalmartGetComplet
             @Override
             public void onClick(View view) {
                 if(checkConnection()) {
-                    WalmartAsyncTask task = new WalmartAsyncTask(MainActivity.this);
-                    task.execute(TEA_ID);
+                    if(task != null && task.getStatus() == AsyncTask.Status.RUNNING){
+                        Toast.makeText(MainActivity.this, "Still pulling food item data...",
+                                Toast.LENGTH_LONG).show();
+                    }else {
+                        WalmartAsyncTask task = new WalmartAsyncTask(MainActivity.this);
+                        task.execute(TEA_ID);
+                    }
                 }
             }
         });
