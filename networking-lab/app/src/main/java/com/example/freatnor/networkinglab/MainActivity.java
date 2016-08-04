@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements WalmartGetComplet
                         Toast.makeText(MainActivity.this, "Still pulling food item data...",
                                 Toast.LENGTH_LONG).show();
                     }else {
-                        WalmartAsyncTask task = new WalmartAsyncTask(MainActivity.this);
+                        task = new WalmartAsyncTask(MainActivity.this);
                         task.execute(COLD_CEREAL_ID, HOT_CEREAL_ID);
                     }
                 }
@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements WalmartGetComplet
                         Toast.makeText(MainActivity.this, "Still pulling food item data...",
                                 Toast.LENGTH_LONG).show();
                     }else {
-                        WalmartAsyncTask task = new WalmartAsyncTask(MainActivity.this);
+                        task = new WalmartAsyncTask(MainActivity.this);
                         task.execute(CHOCOLATE_ID);
                     }
                 }
@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements WalmartGetComplet
                         Toast.makeText(MainActivity.this, "Still pulling food item data...",
                                 Toast.LENGTH_LONG).show();
                     }else {
-                        WalmartAsyncTask task = new WalmartAsyncTask(MainActivity.this);
+                        task = new WalmartAsyncTask(MainActivity.this);
                         task.execute(TEA_ID);
                     }
                 }
