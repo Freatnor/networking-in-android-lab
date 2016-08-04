@@ -22,6 +22,7 @@ import java.util.ArrayList;
  */
 public class WalmartAsyncTask extends AsyncTask<String, Void, ArrayList<WalmartObject>> {
 
+    private static final String TAG = "Walmart Async Task";
     private WalmartGetCompletedListener mListener;
 
     public WalmartAsyncTask(WalmartGetCompletedListener listener) {
@@ -51,10 +52,11 @@ public class WalmartAsyncTask extends AsyncTask<String, Void, ArrayList<WalmartO
 
     public ArrayList<WalmartObject> downloadUrl(String[] params) throws MalformedURLException, IOException, JSONException {
         InputStream is = null;
-        String url = "http://api.walmartlabs.com/v1/paginated/items?format=json&?apiKey="+MainActivity.WALMART_API_KEY;
+        String url = "http://api.walmartlabs.com/v1/paginated/items?format=json&apiKey="+MainActivity.WALMART_API_KEY;
         for (int i = 0; i < params.length; i++) {
-            url+="?category="+params[0];
+            url+="&category="+params[0];
         }
+        Log.i(TAG, "downloadUrl: generated url - " + url);
         String contentAsString = "";
         try {
             URL newUrl = new URL(url);
@@ -85,12 +87,14 @@ public class WalmartAsyncTask extends AsyncTask<String, Void, ArrayList<WalmartO
 
     private ArrayList<WalmartObject> parseJson(String json) throws JSONException {
         ArrayList<WalmartObject> objects = new ArrayList<>();
+        Log.i(TAG, "parseJson: the json string - " + json);
         JSONObject root = new JSONObject(json);
         JSONArray array = root.getJSONArray("items");
         for (int i = 0; i < array.length(); i++) {
             JSONObject obj = array.getJSONObject(i);
-            objects.add(new WalmartObject(obj.getString("name"), obj.getString("salePrice")));
+            objects.add(new WalmartObject(obj.getString("name"), obj.optString("salePrice")));
         }
+        Log.i(TAG, "parseJson: the size of the returned array - " + objects.size());
         return objects;
     }
 }

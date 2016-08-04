@@ -1,9 +1,11 @@
 package com.example.freatnor.networkinglab;
 
+import android.app.Activity;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -34,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements WalmartGetComplet
 
     private ListAdapter mAdapter;
 
-    private ArrayList<WalmartObject> mObjects;
+    private ArrayList<WalmartObject> mObjects = new ArrayList();
 
 
     @Override
@@ -60,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements WalmartGetComplet
             public void onClick(View view) {
                 if(checkConnection()) {
                     WalmartAsyncTask task = new WalmartAsyncTask(MainActivity.this);
-                    task.execute();
+                    task.execute(COLD_CEREAL_ID, HOT_CEREAL_ID);
                 }
             }
         });
@@ -70,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements WalmartGetComplet
             public void onClick(View view) {
                 if(checkConnection()) {
                     WalmartAsyncTask task = new WalmartAsyncTask(MainActivity.this);
-                    task.execute();
+                    task.execute(CHOCOLATE_ID);
                 }
             }
         });
@@ -80,38 +82,11 @@ public class MainActivity extends AppCompatActivity implements WalmartGetComplet
             public void onClick(View view) {
                 if(checkConnection()) {
                     WalmartAsyncTask task = new WalmartAsyncTask(MainActivity.this);
-                    task.execute();
+                    task.execute(TEA_ID);
                 }
             }
         });
 
-        mAdapter = new BaseAdapter() {
-            @Override
-            public int getCount() {
-                return mObjects.size();
-            }
-
-            @Override
-            public Object getItem(int i) {
-                return mObjects.get(i);
-            }
-
-            @Override
-            public long getItemId(int i) {
-                return i;
-            }
-
-            @Override
-            public View getView(int i, View view, ViewGroup viewGroup) {
-                if(view == null){
-                    view = getLayoutInflater().inflate(android.R.layout.simple_list_item_2, viewGroup, false);
-                }
-                ((TextView)view.findViewById(android.R.id.text1)).setText(mObjects.get(i).getName());
-                ((TextView)view.findViewById(android.R.id.text2)).setText(mObjects.get(i).getPrice());
-                return null;
-            }
-        };
-        mListView.setAdapter(mAdapter);
     }
 
     private boolean checkConnection() {
@@ -128,6 +103,37 @@ public class MainActivity extends AppCompatActivity implements WalmartGetComplet
     @Override
     public void onCompleted(ArrayList<WalmartObject> objects) {
         mObjects = objects;
-        mAdapter.notifyAll();
+        if(mListView.getAdapter() == null){
+            mAdapter = new BaseAdapter() {
+                @Override
+                public int getCount() {
+                    return mObjects.size();
+                }
+
+                @Override
+                public Object getItem(int i) {
+                    return mObjects.get(i);
+                }
+
+                @Override
+                public long getItemId(int i) {
+                    return i;
+                }
+
+                @Override
+                public View getView(int i, View view, ViewGroup viewGroup) {
+                    if(view == null){
+                        view = LayoutInflater.from(MainActivity.this).inflate(android.R.layout.simple_list_item_2, viewGroup, false);
+                    }
+                    ((TextView)view.findViewById(android.R.id.text1)).setText(mObjects.get(i).getName());
+                    ((TextView)view.findViewById(android.R.id.text2)).setText(mObjects.get(i).getPrice());
+                    return view;
+                }
+            };
+            mListView.setAdapter(mAdapter);
+        }
+        else {
+            mAdapter.notifyAll();
+        }
     }
 }
