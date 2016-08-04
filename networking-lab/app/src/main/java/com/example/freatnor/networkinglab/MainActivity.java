@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements WalmartGetComplet
     public static final String CHOCOLATE_ID = "976759_1096070_1224976";
 
     public static final String TEA_ID = "976759_976782_1001320";
+    private static final String TAG = "Main Activity";
 
     private Button mCereal;
     private Button mChocolate;
@@ -133,7 +135,10 @@ public class MainActivity extends AppCompatActivity implements WalmartGetComplet
             mListView.setAdapter(mAdapter);
         }
         else {
-            mAdapter.notifyAll();
+//            synchronized (mAdapter){
+//                mAdapter.notify();
+//            }
+            ((BaseAdapter) mListView.getAdapter()).notifyDataSetChanged();
         }
     }
 }
